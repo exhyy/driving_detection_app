@@ -36,10 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   easy_sidemenu: ^0.3.1
   file_picker: ^5.0.1
-  flutter_uploader: ^1.2.1
-  image_picker: ^0.8.5+3
   http: ^0.13.5
-  linear_progress_bar: ^1.1.0
   progresso: ^0.3.0
   sprintf: ^6.0.2
 

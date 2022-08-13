@@ -4,30 +4,9 @@ import 'dart:developer';
 import 'package:driving_detection_app/services/multipart_request.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:linear_progress_bar/linear_progress_bar.dart';
 import 'package:progresso/progresso.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:http/http.dart' as http;
-
-class ProgressBar extends StatelessWidget {
-  final int? currentStep;
-  const ProgressBar({Key? key, this.currentStep}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        LinearProgressBar(
-          maxSteps: 100,
-          progressType: LinearProgressBar.progressTypeLinear,
-          currentStep: currentStep,
-          progressColor: Colors.red,
-          backgroundColor: Colors.grey,
-        ),
-      ],
-    );
-  }
-}
 
 class UploadWidget extends StatefulWidget {
   final String defaultMessage;
