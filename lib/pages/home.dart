@@ -44,12 +44,6 @@ class _HomeState extends State<Home> {
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.lightBlue,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.sunny),
-            onPressed: null,
-          ),
-        ],
       ),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
