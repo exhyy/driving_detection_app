@@ -45,6 +45,12 @@ class _HomeState extends State<Home> {
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.lightBlue,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.sunny),
+            onPressed: null,
+          ),
+        ],
       ),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -71,16 +77,29 @@ class _HomeState extends State<Home> {
           Expanded(
             child: PageView(
               controller: page,
-              children: const [
-                Center(
-                  child: Text(
-                    '提交任务',
-                    style: TextStyle(
-                      fontSize: 40,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Center(
+                      child: Text(
+                        '提交任务',
+                        style: TextStyle(
+                          fontSize: 40,
+                        ),
+                      ),
                     ),
-                  ),
+                    Center(
+                      child: Text(
+                        '提交任务',
+                        style: TextStyle(
+                          fontSize: 40,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                Center(
+                const Center(
                   child: Text(
                     '上传资源',
                     style: TextStyle(
@@ -88,7 +107,7 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-                Center(
+                const Center(
                   child: Text(
                     '任务列表',
                     style: TextStyle(
