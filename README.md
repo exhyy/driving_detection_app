@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+Run `flutter pub get` after cloning this repo. 
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
