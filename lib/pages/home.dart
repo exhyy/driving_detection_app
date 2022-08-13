@@ -8,11 +8,13 @@ class Home extends StatefulWidget {
   @override
   State<Home> createState() => _HomeState();
 }
-
+class global
+{
+  static String video_path="";
+}
 class _HomeState extends State<Home> {
   PageController page = PageController();
   late List<SideMenuItem> sideMenuItems;
-
   _HomeState() {
     sideMenuItems = [
       SideMenuItem(
@@ -74,24 +76,35 @@ class _HomeState extends State<Home> {
                 controller: page,
                 children: [
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Center(
-                        child: Text(
-                          '提交任务',
-                          style: TextStyle(
-                            fontSize: 40,
-                          ),
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children:  [ 
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                        Center(
+                        child: Image.network("http://127.0.0.1:5001/download/"+"README.md",
+                        width: 200,
+                        height: 200,),
                         ),
-                      ),
-                      Center(
-                        child: Text(
-                          '提交任务',
-                          style: TextStyle(
-                            fontSize: 40,
-                          ),
+                        Padding(
+                        padding:const EdgeInsets.symmetric(horizontal: 6.0),
+                        child: Image.network("http://127.0.0.1:5001/download/"+"README.md",
+                        width: 200,
+                        height: 200,),
                         ),
-                      ),
+                        Padding(
+                        padding:const EdgeInsets.symmetric(horizontal: 6.0),
+                        child: Image.network("http://127.0.0.1:5001/download/"+"README.md",
+                        width: 200,
+                        height: 200,),
+                        ),
+                        Padding(
+                        padding:const EdgeInsets.symmetric(horizontal: 6.0),
+                        child: Image.network("http://127.0.0.1:5001/download/"+"README.md",
+                        width: 200,
+                        height: 200,),
+                        ),
+                      ],)
                     ],
                   ),
                   const UploadResource(),

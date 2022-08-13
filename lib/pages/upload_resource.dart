@@ -14,12 +14,12 @@ class UploadResource extends StatelessWidget {
         ),
         Divider(),
         UploadWidget(
-          defaultMessage: '上传物体检测模型（yolov5s）',
+          defaultMessage: '上传物体检测模型(yolov5s)',
           uploadUrl: 'http://127.0.0.1:5000/upload/od_model',
         ),
         Divider(),
         UploadWidget(
-          defaultMessage: '上传车道监测模型（CLRNet）',
+          defaultMessage: '上传车道监测模型(CLRNet)',
           uploadUrl: 'http://127.0.0.1:5000/upload/ld_model',
         ),
       ],
