@@ -1,7 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:driving_detection_app/services/VideoItem.dart';
 import 'package:driving_detection_app/services/loading.dart';
-
+import 'package:http/http.dart' as http;
 class SubmitTask extends StatefulWidget {
   const SubmitTask({
     Key? key,
@@ -13,15 +15,15 @@ class SubmitTask extends StatefulWidget {
 
 class _SubmitTaskState extends State<SubmitTask> {
   List <Widget> l =[];
-  List <String> s =["README.md","README.md"];
+  List <String> videonames =[];
   static bool loadingFinishedsubmit = false;
   int checkedIndex = 0;
-  
+
   @override
   Widget build(BuildContext context) {
     l = [];
-    for (int i =0;i<3;i++){
-      l.add(VideoItem(downloadUrl: "http://127.0.0.1:5000/download/",videoname: "README.md",index: i, checked: checkedIndex == i));
+    for (int i =0;i<videonames.length;i++){
+      l.add(VideoItem(downloadUrl: "http://127.0.0.1:5000/download/",videoname: videonames[i],index: i, checked: checkedIndex == i));
     }
     return loadingFinishedsubmit
     ?NotificationListener<VideoItemNotification>(
@@ -63,6 +65,15 @@ class _SubmitTaskState extends State<SubmitTask> {
     : Loading(
             onLoading: () async {
               await Future.delayed(const Duration(seconds: 2));
+              final client = http.Client();
+              final url = Uri.parse("http://127.0.0.1:5000/videolist");
+              final response = await client.get(url);
+              if (response.statusCode!=0) 
+                {
+                  videonames=jsonDecode(response.body).cast<String>();
+                } else {
+                  print(response.statusCode);
+                }
               setState(() {
                 loadingFinishedsubmit = true;
               });
