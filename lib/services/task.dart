@@ -65,7 +65,7 @@ class TaskItem extends StatelessWidget {
                       IconButton(
                         icon: const Icon(Icons.info_outline_rounded),
                         splashRadius: 15,
-                        onPressed: () => TaskNotification(taskId: taskId, type: 'detail'),
+                        onPressed: () => TaskNotification(taskId: taskId, type: 'detail').dispatch(context),
                       )
                     ],
                   ),
@@ -94,9 +94,14 @@ class TaskItem extends StatelessWidget {
           ),
         ),
         IconButton(
-          icon: const Icon(Icons.delete, color: Colors.red,),
+          // icon: const Icon(Icons.delete, color: Colors.red,),
+          icon: taskStatus == 'running'
+            ? Icon(Icons.delete, color: Colors.grey[400],)
+            : const Icon(Icons.delete,color: Colors.red,),
           splashRadius: 20,
-          onPressed: () => TaskNotification(type: 'delete', taskId: taskId),
+          onPressed: taskStatus == 'running'
+            ? null
+            : () => TaskNotification(type: 'delete', taskId: taskId).dispatch(context),
         ),
       ],
     );
