@@ -32,7 +32,7 @@ class _VideoItem extends State<VideoItem> {
           ? 1
           : 0;
     textcolor = widget.checked
-          ?Color.fromARGB(120, 255, 255, 255)
+          ?Color.fromARGB(120, 122, 118, 118)
           :Color.fromARGB(0, 255, 255, 255);
     return TextButton(
       onPressed: () => VideoItemNotification(checkedIndex: widget.index).dispatch(context),
