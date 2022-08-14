@@ -1,9 +1,11 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:driving_detection_app/services/VideoItem.dart';
 import 'package:driving_detection_app/services/loading.dart';
 import 'package:http/http.dart' as http;
+import 'package:numberpicker/numberpicker.dart';
+// import 'package:flutter_number_picker/flutter_number_picker.dart';
+
 class SubmitTask extends StatefulWidget {
   const SubmitTask({
     Key? key,
@@ -14,16 +16,31 @@ class SubmitTask extends StatefulWidget {
 }
 
 class _SubmitTaskState extends State<SubmitTask> {
-  List <Widget> l =[];
-  List <String> videonames =[];
+  int _currentValue=1;
+  List <Widget> l_image =[];
+  List <DropdownMenuItem<String>> l_yolo =[];
+  List <DropdownMenuItem<String>> l_CLR =[];
+  static List <String> videonames =[];
+  static List <String> weightsofyolo =[];
+  static List <String> weightsofCLR =[];
   static bool loadingFinishedsubmit = false;
   int checkedIndex = 0;
-
+  var _dropValue_yolo = '0';
+  var _dropValue_CLR = '0';
   @override
   Widget build(BuildContext context) {
-    l = [];
+    l_image = [];
+    l_CLR =[];
+    l_yolo=[];
     for (int i =0;i<videonames.length;i++){
-      l.add(VideoItem(downloadUrl: "http://127.0.0.1:5000/download/",videoname: videonames[i],index: i, checked: checkedIndex == i));
+      l_image.add(VideoItem(downloadUrl: "http://127.0.0.1:5000/download/",videoname: videonames[i],index: i, checked: checkedIndex == i));
+    }
+    for (int i =0;i<weightsofyolo.length;i++){
+      l_yolo.add(DropdownMenuItem(child: Text(weightsofyolo[i]),value: i.toString(),));
+      print(l_yolo[0]);
+    }
+        for (int i =0;i<weightsofCLR.length;i++){
+      l_CLR.add(DropdownMenuItem(child: Text(weightsofCLR[i]),value: i.toString(),));
     }
     return loadingFinishedsubmit
     ?NotificationListener<VideoItemNotification>(
@@ -35,6 +52,15 @@ class _SubmitTaskState extends State<SubmitTask> {
       },
       child: Column(
         children: [
+          const Center(
+            child:Text("选择视频",
+            style: TextStyle(
+              color: Colors.blue,
+              fontSize: 30,
+              fontWeight: FontWeight.w700,
+              fontFamily: "SimHei",
+            ),),
+          ),
           Expanded(
             child: RepaintBoundary (
                     child: SizedBox(
@@ -50,7 +76,7 @@ class _SubmitTaskState extends State<SubmitTask> {
                               alignment: WrapAlignment.start,
                               spacing: 5, //主轴上子控件的间距2
                               runSpacing: 5, //交叉轴上子控件之间的间距
-                              children: l
+                              children: l_image
                             ),
                           ),
                         ),
@@ -58,7 +84,57 @@ class _SubmitTaskState extends State<SubmitTask> {
                     ),
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).size.height/2,)
+          const Divider(),
+          Column(
+            children: [
+              const Center(
+                child:Text("选择YOLO模型",
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: "SimHei",
+                ),),
+              ),
+              Center(
+                child:DropdownButton(
+                value: _dropValue_yolo,
+                isExpanded: true,
+                items: l_yolo,
+                onChanged: (value){
+                  setState(() {
+                    _dropValue_yolo = value.toString();
+                  });
+                },
+              ),
+              ),
+              Center(
+                child:DropdownButton(
+                value: _dropValue_CLR,
+                isExpanded: true,
+                items: l_CLR,
+                onChanged: (value){
+                  setState(() {
+                    _dropValue_CLR = value.toString();
+                  });
+                },
+              ),
+              ),
+              const Divider(),
+              Center(
+                child:NumberPicker(
+                  value: _currentValue ,
+                  minValue: 0,
+                  maxValue: 100,
+                  onChanged: (value) => setState(() => _currentValue = value),
+                ),
+              ),
+              Text('Current value: $_currentValue'),
+            ],
+          ),
+          
+          SizedBox(height: MediaQuery.of(context).size.height*1/2,)
+
         ],
       ),
     )
@@ -70,7 +146,11 @@ class _SubmitTaskState extends State<SubmitTask> {
               final response = await client.get(url);
               if (response.statusCode!=0) 
                 {
-                  videonames=jsonDecode(response.body).cast<String>();
+                  setState(() {
+                    videonames=jsonDecode(response.body)["namesofvideo"].cast<String>();
+                    weightsofyolo=jsonDecode(response.body)["weightsofyolov5"].cast<String>();
+                    weightsofCLR=jsonDecode(response.body)["weightsofCLR"].cast<String>();
+                  });
                 } else {
                   print(response.statusCode);
                 }
