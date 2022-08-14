@@ -4,7 +4,6 @@ import 'package:driving_detection_app/services/VideoItem.dart';
 import 'package:driving_detection_app/services/loading.dart';
 import 'package:http/http.dart' as http;
 import 'package:numberpicker/numberpicker.dart';
-// import 'package:flutter_number_picker/flutter_number_picker.dart';
 
 class SubmitTask extends StatefulWidget {
   const SubmitTask({
@@ -125,11 +124,31 @@ class _SubmitTaskState extends State<SubmitTask> {
                 child:NumberPicker(
                   value: _currentValue ,
                   minValue: 0,
-                  maxValue: 100,
+                  maxValue: 5,
+                  haptics: true,
                   onChanged: (value) => setState(() => _currentValue = value),
                 ),
               ),
-              Text('Current value: $_currentValue'),
+              Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.remove),
+                  onPressed: () => setState(() {
+                    final newValue = _currentValue - 1;
+                    _currentValue = newValue.clamp(0, 5);
+                  }),
+                ),
+                Text('Current int value: $_currentValue'),
+                IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () => setState(() {
+                    final newValue = _currentValue + 1;
+                    _currentValue = newValue.clamp(0, 5);
+                  }),
+                ),
+              ],
+            ),
             ],
           ),
           
