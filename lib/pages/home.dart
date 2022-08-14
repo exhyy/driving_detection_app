@@ -3,9 +3,9 @@ import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:driving_detection_app/pages/upload_resource.dart';
 import 'package:driving_detection_app/pages/submit_task.dart';
 import 'package:driving_detection_app/pages/task_list.dart';
-
-class global {
-  static String video_path = "";
+class global
+{
+  static String video_path="";
 }
 
 class Home extends StatefulWidget {
