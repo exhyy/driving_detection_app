@@ -30,7 +30,9 @@ class _VideoItem extends State<VideoItem> {
       child: Image.network(widget.downloadUrl+widget.videoname,
       fit: BoxFit.fill,
       width: 200,
-    height: 150,),
+      height: 150,
+      color: Colors.black,
+      colorBlendMode:BlendMode.dst),
       ),
     );
   }

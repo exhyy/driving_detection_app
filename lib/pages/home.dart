@@ -3,6 +3,7 @@ import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:driving_detection_app/pages/upload_resource.dart';
 import 'package:flutter/rendering.dart';
 import 'package:driving_detection_app/services/VideoItem.dart';
+import 'package:driving_detection_app/pages/submit_task.dart';
 class global
 {
   static String video_path="";
@@ -15,12 +16,8 @@ class Home extends StatefulWidget {
 }
 class _HomeState extends State<Home> {
   PageController page = PageController();
-  List <Widget> l =[];
   late List<SideMenuItem> sideMenuItems;
   _HomeState() {
-    
-    l.add(const VideoItem(downloadUrl: "http://127.0.0.1:5001/download/",videoname: "README.md"));
-
     sideMenuItems = [
       SideMenuItem(
         priority: 0,
@@ -79,37 +76,10 @@ class _HomeState extends State<Home> {
               padding: const EdgeInsets.all(8),
               child: PageView(
                 controller: page,
-                children: [
-                  Column(
-                    children: [
-                      Expanded(
-                        child: RepaintBoundary (
-                                child: SizedBox(
-                                  height: 50.0,
-                                  child: Scrollbar(
-                                    child: SingleChildScrollView(
-                                      controller: ScrollController(),
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        child: Wrap
-                                        (
-                                          textDirection: TextDirection.ltr,
-                                          alignment: WrapAlignment.start,
-                                          spacing: 5, //主轴上子控件的间距2
-                                          runSpacing: 5, //交叉轴上子控件之间的间距
-                                          children: l
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                        ),
-                      ),
-                      SizedBox(height: MediaQuery.of(context).size.height/2,)
-                    ],
-                  ),
-                  const UploadResource(),
-                  const Center(
+                children: const[
+                  SubmitTask(),
+                  UploadResource(),
+                  Center(
                     child: Text(
                       '任务列表',
                       style: TextStyle(
