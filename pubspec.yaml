@@ -39,6 +39,7 @@ dependencies:
   http: ^0.13.5
   progresso: ^0.3.0
   sprintf: ^6.0.2
+  flutter_spinkit: ^5.1.0
 
 dev_dependencies:
   flutter_test:
