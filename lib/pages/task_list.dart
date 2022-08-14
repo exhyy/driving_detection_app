@@ -24,14 +24,6 @@ class _TaskListState extends State<TaskList> {
     taskInfo = json.decode(response.body);
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // await getData();
-  //   print('init!');
-  //   print(taskInfo);
-  // }
-
   @override
   Widget build(BuildContext context) {
     if (firstRequest) {
