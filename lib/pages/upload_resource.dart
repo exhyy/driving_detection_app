@@ -11,6 +11,7 @@ class UploadResource extends StatefulWidget {
 
 class _UploadResourceState extends State<UploadResource> {
   static bool loadingFinished = false;
+  List list = [];
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +37,7 @@ class _UploadResourceState extends State<UploadResource> {
         : Loading(
             onLoading: () async {
               await Future.delayed(const Duration(seconds: 2));
+
               setState(() {
                 loadingFinished = true;
               });
