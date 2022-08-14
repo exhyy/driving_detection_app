@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:driving_detection_app/pages/upload_resource.dart';
-import 'package:flutter/rendering.dart';
-import 'package:driving_detection_app/services/VideoItem.dart';
 import 'package:driving_detection_app/pages/submit_task.dart';
-class global
-{
-  static String video_path="";
+import 'package:driving_detection_app/pages/task_list.dart';
+
+class global {
+  static String video_path = "";
 }
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
 }
+
 class _HomeState extends State<Home> {
   PageController page = PageController();
   late List<SideMenuItem> sideMenuItems;
@@ -76,17 +77,10 @@ class _HomeState extends State<Home> {
               padding: const EdgeInsets.all(8),
               child: PageView(
                 controller: page,
-                children: const[
+                children: [
                   SubmitTask(),
                   UploadResource(),
-                  Center(
-                    child: Text(
-                      '任务列表',
-                      style: TextStyle(
-                        fontSize: 40,
-                      ),
-                    ),
-                  ),
+                  TaskList(),
                 ],
               ),
             ),
