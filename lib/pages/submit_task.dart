@@ -15,7 +15,8 @@ class SubmitTask extends StatefulWidget {
 }
 
 class _SubmitTaskState extends State<SubmitTask> {
-  int _currentValue=1;
+  int _currentValueofyolo=1;
+  int _currentValueofCLR=1;
   List <Widget> l_image =[];
   List <DropdownMenuItem<String>> l_yolo =[];
   List <DropdownMenuItem<String>> l_CLR =[];
@@ -87,7 +88,7 @@ class _SubmitTaskState extends State<SubmitTask> {
           Column(
             children: [
               const Center(
-                child:Text("选择YOLO模型",
+                child:Text("选择模型",
                 style: TextStyle(
                   color: Colors.blue,
                   fontSize: 30,
@@ -120,39 +121,90 @@ class _SubmitTaskState extends State<SubmitTask> {
               ),
               ),
               const Divider(),
-              Center(
-                child:NumberPicker(
-                  value: _currentValue ,
-                  minValue: 0,
-                  maxValue: 5,
-                  haptics: true,
-                  onChanged: (value) => setState(() => _currentValue = value),
-                ),
-              ),
+              const Text('周期', style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: "SimHei",
+                ),),
               Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.remove),
-                  onPressed: () => setState(() {
-                    final newValue = _currentValue - 1;
-                    _currentValue = newValue.clamp(0, 5);
-                  }),
-                ),
-                Text('Current int value: $_currentValue'),
-                IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () => setState(() {
-                    final newValue = _currentValue + 1;
-                    _currentValue = newValue.clamp(0, 5);
-                  }),
-                ),
-              ],
+                children: [
+                  SizedBox(width: MediaQuery.of(context).size.width*1/6,),
+                  Column(
+                    children: [
+                      Text('For Yolo', style: Theme.of(context).textTheme.headline6),
+                      Center(
+                        child:NumberPicker(
+                          value: _currentValueofyolo ,
+                          minValue: 1,
+                          maxValue: 5,
+                          haptics: true,
+                          onChanged: (value) => setState(() => _currentValueofyolo = value),
+                        ),
+                      ),
+                      Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.remove),
+                          onPressed: () => setState(() {
+                            final newValue = _currentValueofyolo - 1;
+                            _currentValueofyolo = newValue.clamp(1, 5);
+                          }),
+                        ),
+                        Text('Current int value: $_currentValueofyolo'),
+                        IconButton(
+                          icon: Icon(Icons.add),
+                          onPressed: () => setState(() {
+                            final newValue = _currentValueofyolo + 1;
+                            _currentValueofyolo = newValue.clamp(1, 5);
+                          }),
+                        ),
+                      ],
             ),
+                    ],
+                  ),          
+                  SizedBox(width: MediaQuery.of(context).size.width*1/3,),    
+                  Column(
+                    children: [
+                      Text('For CLR', style: Theme.of(context).textTheme.headline6),
+                      Center(
+                        child:NumberPicker(
+                          value: _currentValueofCLR,
+                          minValue: 1,
+                          maxValue: 5,
+                          haptics: true,
+                          onChanged: (value) => setState(() => _currentValueofCLR = value),
+                        ),
+                      ),
+                      Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.remove),
+                          onPressed: () => setState(() {
+                            final newValue = _currentValueofCLR - 1;
+                            _currentValueofCLR = newValue.clamp(1, 5);
+                          }),
+                        ),
+                        Text('Current int value: $_currentValueofCLR'),
+                        IconButton(
+                          icon: Icon(Icons.add),
+                          onPressed: () => setState(() {
+                            final newValue = _currentValueofCLR + 1;
+                            _currentValueofCLR = newValue.clamp(1, 5);
+                          }),
+                        ),
+                      ],
+            ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
           
-          SizedBox(height: MediaQuery.of(context).size.height*1/2,)
+          SizedBox(height: MediaQuery.of(context).size.height*3/7,)
 
         ],
       ),
