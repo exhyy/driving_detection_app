@@ -7,6 +7,7 @@ import 'package:driving_detection_app/pages/submit_task.dart';
 class global
 {
   static String video_path="";
+  static List<int> mycolor = [0,0];
 }
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
