@@ -5,6 +5,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:driving_detection_app/services/modal.dart';
 import 'package:dart_vlc/dart_vlc.dart';
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:internet_file/internet_file.dart';
+import 'package:internet_file/storage_io.dart';
 
 class TaskNotification extends Notification {
   final String type; // 'detail'或'delete'
@@ -44,7 +47,33 @@ class TaskItem extends StatefulWidget {
 class _TaskItemState extends State<TaskItem> {
   bool showDetail = false;
   bool showOnlineVideo = false;
+  String downloadStatus = 'waiting';
+  double downloadProgress = 0.0;
+  double _tempProgress = 0.0;
   final player = Player(id: 114514, registerTexture: false);
+
+  void downloadOutput() async {
+    final storageIO = InternetFileStorageIO();
+
+    await InternetFile.get(
+      'http://127.0.0.1:5000/downloadoutput/${widget.videoName}',
+      storage: storageIO,
+      progress: (receivedLength, contentLength) {
+        _tempProgress = receivedLength / contentLength;
+        if (_tempProgress - downloadProgress > 0.01 || _tempProgress == 1.0) {
+          downloadProgress = _tempProgress;
+          // print('progress: $progress');
+          setState(() {
+            downloadProgress = _tempProgress;
+          });
+        }
+      },
+      storageAdditional: storageIO.additional(
+        filename: widget.videoName,
+        location: './download/',
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +103,54 @@ class _TaskItemState extends State<TaskItem> {
       );
     }
 
+    late Widget downloadWidget;
+    if (widget.taskStatus != 'done') {
+      downloadWidget = Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Icon(
+          Icons.download_rounded,
+          color: Colors.grey[400],
+          size: 34,
+        ),
+      );
+    } else {
+      if (downloadStatus == 'waiting') {
+        downloadWidget = IconButton(
+          icon: Icon(
+            Icons.download_rounded,
+            color: Colors.blue[200],
+          ),
+          iconSize: 34,
+          splashRadius: 15,
+          onPressed: () {
+            downloadOutput();
+            setState(() {
+              downloadStatus = 'running';
+            });
+          },
+        );
+      } else if (downloadStatus == 'running') {
+        downloadWidget = Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: CircularPercentIndicator(
+            radius: 15,
+            lineWidth: 3,
+            percent: downloadProgress,
+            center: Text(
+              sprintf('%2d', [
+                int.parse((downloadProgress * 100).toString().split('.')[0])
+              ]),
+              style: const TextStyle(
+                fontSize: 13,
+              ),
+            ),
+            // footer: Text('100%'),
+            progressColor: Colors.green[400],
+          ),
+        );
+      }
+    }
+
     return Row(
       children: [
         Expanded(
@@ -85,7 +162,12 @@ class _TaskItemState extends State<TaskItem> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        child: Text(widget.taskName),
+                        child: Text(
+                          widget.taskName,
+                          style: const TextStyle(
+                            fontSize: 22,
+                          ),
+                        ),
                       ),
                       Modal(
                         visible: showDetail,
@@ -129,7 +211,11 @@ class _TaskItemState extends State<TaskItem> {
                         )),
                         onClose: () => setState(() => showDetail = false),
                         child: IconButton(
-                          icon: Icon(Icons.info_outline_rounded, color: Colors.blue[200],),
+                          icon: Icon(
+                            Icons.info_outline_rounded,
+                            color: Colors.blue[200],
+                          ),
+                          iconSize: 34,
                           splashRadius: 15,
                           onPressed: () => setState(() => showDetail = true),
                         ),
@@ -153,6 +239,7 @@ class _TaskItemState extends State<TaskItem> {
                                   Icons.play_circle_outline_rounded,
                                   color: Colors.blue[200],
                                 ),
+                                iconSize: 34,
                                 splashRadius: 15,
                                 onPressed: () {
                                   setState(() {
@@ -166,9 +253,11 @@ class _TaskItemState extends State<TaskItem> {
                                 child: Icon(
                                   Icons.play_circle_outline_rounded,
                                   color: Colors.grey[400],
+                                  size: 34,
                                 ),
                               ),
                       ),
+                      downloadWidget,
                     ],
                   ),
                 ),
@@ -198,6 +287,7 @@ class _TaskItemState extends State<TaskItem> {
         ),
         IconButton(
           // icon: const Icon(Icons.delete, color: Colors.red,),
+          iconSize: 34,
           icon: widget.taskStatus == 'running'
               ? Icon(
                   Icons.delete,
