@@ -337,6 +337,7 @@ class _SubmitTaskState extends State<SubmitTask> {
                     weightsofCLR = jsonDecode(response.body)["weightsofCLR"]
                         .cast<String>();
                   });
+                  print(videonames);
                 } else {
                   print(response.statusCode);
                 }
