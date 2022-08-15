@@ -197,8 +197,8 @@ class _SubmitTaskState extends State<SubmitTask> {
               },
               child: ListView(
                 controller: ScrollController(),
-                children: 
-                  [Column(
+                children: [
+                  Column(
                     children: [
                       const Center(
                         child: Text(
@@ -257,9 +257,8 @@ class _SubmitTaskState extends State<SubmitTask> {
             )
           : Loading(
               onLoading: () async {
-                await Future.delayed(const Duration(seconds: 2));
                 final client = http.Client();
-                final url = Uri.parse("http://172.27.83.166:5000/videolist");
+                final url = Uri.parse("http://127.0.0.1:5000/videolist");
                 final response = await client.get(url);
                 if (response.statusCode != 0) {
                   setState(() {
@@ -270,6 +269,7 @@ class _SubmitTaskState extends State<SubmitTask> {
                     weightsofCLR = jsonDecode(response.body)["weightsofCLR"]
                         .cast<String>();
                   });
+                  print(videonames);
                 } else {
                   print(response.statusCode);
                 }

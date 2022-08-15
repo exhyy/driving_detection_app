@@ -49,9 +49,7 @@ class _TaskListState extends State<TaskList> {
               }
               firstRequest = false;
             });
-          } catch (e) {
-            print(e);
-          }
+          } catch (e) {}
         },
       );
     } else {
@@ -59,9 +57,7 @@ class _TaskListState extends State<TaskList> {
         try {
           await getData();
           setState(() {});
-        } catch (e) {
-          print(e);
-        }
+        } catch (e) {}
       });
       // print('build!');
       taskList = [];

@@ -4,6 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:driving_detection_app/services/modal.dart';
+import 'package:dart_vlc/dart_vlc.dart';
 
 class TaskNotification extends Notification {
   final String type; // 'detail'或'delete'
@@ -41,11 +42,15 @@ class TaskItem extends StatefulWidget {
 }
 
 class _TaskItemState extends State<TaskItem> {
-  bool showModal = false;
+  bool showDetail = false;
+  bool showOnlineVideo = false;
+  final player = Player(id: 114514, registerTexture: false);
 
   @override
   Widget build(BuildContext context) {
     final Widget statusIcon;
+    final media =
+        Media.network('http://127.0.0.1:5000/onlinevideo/${widget.videoName}');
     if (widget.taskStatus == 'waiting') {
       statusIcon = const Padding(
         padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -83,7 +88,7 @@ class _TaskItemState extends State<TaskItem> {
                         child: Text(widget.taskName),
                       ),
                       Modal(
-                        visible: showModal,
+                        visible: showDetail,
                         modal: Dialog(
                             child: SizedBox(
                           width: 400,
@@ -122,13 +127,48 @@ class _TaskItemState extends State<TaskItem> {
                             ],
                           ),
                         )),
-                        onClose: () => setState(() => showModal = false),
+                        onClose: () => setState(() => showDetail = false),
                         child: IconButton(
-                          icon: const Icon(Icons.info_outline_rounded),
+                          icon: Icon(Icons.info_outline_rounded, color: Colors.blue[200],),
                           splashRadius: 15,
-                          onPressed: () => setState(() => showModal = true),
+                          onPressed: () => setState(() => showDetail = true),
                         ),
-                      )
+                      ),
+                      Modal(
+                        visible: showOnlineVideo,
+                        onClose: () => setState(() => showOnlineVideo = false),
+                        modal: Dialog(
+                          child: SizedBox(
+                            width: 1920 / 2,
+                            height: 1080 / 2,
+                            child: NativeVideo(
+                              player: player,
+                              showControls: false,
+                            ),
+                          ),
+                        ),
+                        child: widget.taskStatus == 'done'
+                            ? IconButton(
+                                icon: Icon(
+                                  Icons.play_circle_outline_rounded,
+                                  color: Colors.blue[200],
+                                ),
+                                splashRadius: 15,
+                                onPressed: () {
+                                  setState(() {
+                                    showOnlineVideo = true;
+                                    player.open(media);
+                                  });
+                                },
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(
+                                  Icons.play_circle_outline_rounded,
+                                  color: Colors.grey[400],
+                                ),
+                              ),
+                      ),
                     ],
                   ),
                 ),
