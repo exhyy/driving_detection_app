@@ -44,7 +44,8 @@ dependencies:
   flutter_portal: ^1.1.1
   numberpicker: ^2.1.1
   flutter_number_picker: ^1.0.4
-  
+  dio: ^4.0.6
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

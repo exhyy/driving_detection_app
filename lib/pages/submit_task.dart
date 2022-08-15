@@ -5,6 +5,9 @@ import 'package:driving_detection_app/services/VideoItem.dart';
 import 'package:driving_detection_app/services/loading.dart';
 import 'package:http/http.dart' as http;
 import 'package:numberpicker/numberpicker.dart';
+import 'package:dio/dio.dart';
+import 'package:driving_detection_app/services/multipart_request.dart';
+import 'dart:io';
 
 class SubmitTask extends StatefulWidget {
   const SubmitTask({
@@ -16,18 +19,39 @@ class SubmitTask extends StatefulWidget {
 }
 
 class _SubmitTaskState extends State<SubmitTask> {
+  var _titleTxt = new TextEditingController();
   int _currentValueofyolo = 1;
   int _currentValueofCLR = 1;
   List<Widget> l_image = [];
   List<DropdownMenuItem<String>> l_yolo = [];
   List<DropdownMenuItem<String>> l_CLR = [];
+  List<DropdownMenuItem<String>> l_backbone = [
+    const DropdownMenuItem(
+      child: Text('Resnet18'),
+      value: '0',
+    ),
+    const DropdownMenuItem(
+      child: Text('Resnet34'),
+      value: '1',
+    ),
+    const DropdownMenuItem(
+      child: Text('m3s'),
+      value: '2',
+    ),
+    const DropdownMenuItem(
+      child: Text('m3l'),
+      value: '3',
+    ),
+  ];
   static List<String> videonames = [];
   static List<String> weightsofyolo = [];
   static List<String> weightsofCLR = [];
+  static List<String> backbones = ['Resnet18', 'Resnet34', 'm3s', 'm3l'];
   static bool loadingFinishedsubmit = false;
   int checkedIndex = 0;
-  var _dropValue_yolo = '0';
-  var _dropValue_CLR = '0';
+  var _dropValue_yolo = null;
+  var _dropValue_CLR = null;
+  var _dropValue_backnone = null;
   @override
   Widget build(BuildContext context) {
     l_image = [];
@@ -70,6 +94,7 @@ class _SubmitTaskState extends State<SubmitTask> {
           value: _dropValue_yolo,
           isExpanded: true,
           items: l_yolo,
+          hint: Text('请选择yolo的模型文件'),
           onChanged: (value) {
             setState(() {
               _dropValue_yolo = value.toString();
@@ -79,19 +104,40 @@ class _SubmitTaskState extends State<SubmitTask> {
           },
         ),
       ),
-      Center(
-        child: DropdownButton(
-          value: _dropValue_CLR,
-          isExpanded: true,
-          items: l_CLR,
-          onChanged: (value) {
-            setState(() {
-              _dropValue_CLR = value.toString();
-              global.config["clrnet_model_name"] =
-                  weightsofCLR[int.parse(value.toString())];
-            });
-          },
-        ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Expanded(
+            child: DropdownButton(
+              value: _dropValue_CLR,
+              isExpanded: true,
+              items: l_CLR,
+              hint: Text('请选择CLR的模型文件'),
+              onChanged: (value) {
+                setState(() {
+                  _dropValue_CLR = value.toString();
+                  global.config["clrnet_model_name"] =
+                      weightsofCLR[int.parse(value.toString())];
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: DropdownButton(
+              value: _dropValue_backnone,
+              isExpanded: true,
+              items: l_backbone,
+              hint: Text('请选择CLR的backbone'),
+              onChanged: (value) {
+                setState(() {
+                  _dropValue_backnone = value.toString();
+                  global.config["clrnet_backbone"] =
+                      backbones[int.parse(value.toString())];
+                });
+              },
+            ),
+          ),
+        ],
       ),
       const Divider(),
       const Text(
@@ -197,8 +243,8 @@ class _SubmitTaskState extends State<SubmitTask> {
               },
               child: ListView(
                 controller: ScrollController(),
-                children: 
-                  [Column(
+                children: [
+                  Column(
                     children: [
                       const Center(
                         child: Text(
@@ -241,10 +287,31 @@ class _SubmitTaskState extends State<SubmitTask> {
                         children: children2,
                       ),
                       ListTile(
-                        title: TextField(),
+                        title: TextField(
+                          controller: _titleTxt,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(10.0),
+                            labelText: '任务名称',
+                            hintText: '示例:MyTask',
+                            helperText: '请输入任务名称',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
                         trailing: MaterialButton(
                           child: const Text("提交"),
-                          onPressed: () {},
+                          onPressed: () async {
+                            setState(() {
+                              global.config['name'] = _titleTxt.text;
+                            });
+                            BaseOptions options = BaseOptions(
+                              method: "post",
+                              headers: {
+                                "Content-Type": "application/json",
+                              },
+                            );
+                            Dio dio = Dio(options);
+                            Response res = await dio.post('http://127.0.0.1:5000/submit', data: global.config);
+                          },
                         ),
                       ),
                       SizedBox(
@@ -257,14 +324,14 @@ class _SubmitTaskState extends State<SubmitTask> {
             )
           : Loading(
               onLoading: () async {
-                await Future.delayed(const Duration(seconds: 2));
                 final client = http.Client();
-                final url = Uri.parse("http://172.27.83.166:5000/videolist");
+                final url = Uri.parse("http://127.0.0.1:5000/videolist");
                 final response = await client.get(url);
                 if (response.statusCode != 0) {
                   setState(() {
                     videonames = jsonDecode(response.body)["namesofvideo"]
                         .cast<String>();
+                    global.config['video_name']=videonames[0];
                     weightsofyolo = jsonDecode(response.body)["weightsofyolov5"]
                         .cast<String>();
                     weightsofCLR = jsonDecode(response.body)["weightsofCLR"]
