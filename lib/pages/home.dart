@@ -5,7 +5,15 @@ import 'package:driving_detection_app/pages/submit_task.dart';
 import 'package:driving_detection_app/pages/task_list.dart';
 class global
 {
-  static String video_path="";
+  static Map config ={
+    "name":"",
+    "video_name": "",
+    "yolov5_model_name": "",
+    "clrnet_model_name":"",
+    "clrnet_backbone":"",
+    "yolov5_period": 1,
+    "clrnet_period": 1,
+  };
 }
 
 class Home extends StatefulWidget {

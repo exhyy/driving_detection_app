@@ -35,7 +35,14 @@ class _VideoItem extends State<VideoItem> {
           ?Color.fromARGB(120, 122, 118, 118)
           :Color.fromARGB(0, 255, 255, 255);
     return TextButton(
-      onPressed: () => VideoItemNotification(checkedIndex: widget.index).dispatch(context),
+      onPressed: () 
+      {
+        VideoItemNotification(checkedIndex: widget.index).dispatch(context);
+        setState(() {
+          global.config["video_name"] = widget.videoname;
+        });
+      },
+      //=> VideoItemNotification(checkedIndex: widget.index).dispatch(context),
       // onPressed: ()
       // {
 
