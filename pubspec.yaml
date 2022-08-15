@@ -35,7 +35,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   easy_sidemenu: ^0.3.1
-  file_picker: ^5.0.1
+  file_picker: ^4.6.0
   http: ^0.13.5
   progresso: ^0.3.0
   sprintf: ^6.0.2
