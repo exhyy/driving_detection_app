@@ -3,7 +3,7 @@ import 'package:progresso/progresso.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sprintf/sprintf.dart';
-import 'package:driving_detection_app/services/moral.dart';
+import 'package:driving_detection_app/services/modal.dart';
 
 class TaskNotification extends Notification {
   final String type; // 'detail'或'delete'
