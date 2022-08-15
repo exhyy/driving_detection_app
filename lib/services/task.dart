@@ -17,12 +17,24 @@ class TaskItem extends StatefulWidget {
       required this.taskName,
       required this.taskStatus,
       required this.progress,
-      required this.taskId})
+      required this.taskId,
+      required this.videoName,
+      required this.yolov5ModelName,
+      required this.clrnetModelName,
+      required this.clrnetBackbone,
+      required this.yolov5Period,
+      required this.clrnetPeriod})
       : super(key: key);
   final String taskName;
   final String taskStatus;
   final double progress;
   final int taskId;
+  final String videoName;
+  final String yolov5ModelName;
+  final String clrnetModelName;
+  final String clrnetBackbone;
+  final int yolov5Period;
+  final int clrnetPeriod;
 
   @override
   State<TaskItem> createState() => _TaskItemState();
@@ -72,17 +84,49 @@ class _TaskItemState extends State<TaskItem> {
                       ),
                       Modal(
                         visible: showModal,
-                        modal: const Dialog(
-                          child: Text('some infomation'),
-                        ),
+                        modal: Dialog(
+                            child: SizedBox(
+                          width: 400,
+                          height: 500,
+                          child: ListView(
+                            controller: ScrollController(),
+                            children: [
+                              ListTile(
+                                leading: const Text('任务名称'),
+                                title: Text(widget.taskName),
+                              ),
+                              ListTile(
+                                leading: const Text('视频名称'),
+                                title: Text(widget.videoName),
+                              ),
+                              ListTile(
+                                leading: const Text('yolov5模型'),
+                                title: Text(widget.yolov5ModelName),
+                              ),
+                              ListTile(
+                                leading: const Text('CLRNet模型'),
+                                title: Text(widget.clrnetModelName),
+                              ),
+                              ListTile(
+                                leading: const Text('CLENet backbone'),
+                                title: Text(widget.clrnetBackbone),
+                              ),
+                              ListTile(
+                                leading: const Text('yolov5处理周期'),
+                                title: Text(widget.yolov5Period.toString()),
+                              ),
+                              ListTile(
+                                leading: const Text('CLRNet处理周期'),
+                                title: Text(widget.clrnetPeriod.toString()),
+                              ),
+                            ],
+                          ),
+                        )),
                         onClose: () => setState(() => showModal = false),
                         child: IconButton(
                           icon: const Icon(Icons.info_outline_rounded),
                           splashRadius: 15,
                           onPressed: () => setState(() => showModal = true),
-                          // onPressed: () => TaskNotification(
-                          //         taskId: widget.taskId, type: 'detail')
-                          //     .dispatch(context),
                         ),
                       )
                     ],

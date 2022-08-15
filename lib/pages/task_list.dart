@@ -39,6 +39,12 @@ class _TaskListState extends State<TaskList> {
                   taskId: i,
                   taskStatus: taskInfo[i]['status'],
                   progress: taskInfo[i]['progress'],
+                  videoName: taskInfo[i]['video_name'],
+                  yolov5ModelName: taskInfo[i]['yolov5_model_name'],
+                  clrnetModelName: taskInfo[i]['clrnet_model_name'],
+                  clrnetBackbone: taskInfo[i]['clrnet_backbone'],
+                  yolov5Period: taskInfo[i]['yolov5_period'],
+                  clrnetPeriod: taskInfo[i]['clrnet_period'],
                 ));
               }
               firstRequest = false;
@@ -65,6 +71,12 @@ class _TaskListState extends State<TaskList> {
           taskId: i,
           taskStatus: taskInfo[i]['status'],
           progress: taskInfo[i]['progress'],
+          videoName: taskInfo[i]['video_name'],
+          yolov5ModelName: taskInfo[i]['yolov5_model_name'],
+          clrnetModelName: taskInfo[i]['clrnet_model_name'],
+          clrnetBackbone: taskInfo[i]['clrnet_backbone'],
+          yolov5Period: taskInfo[i]['yolov5_period'],
+          clrnetPeriod: taskInfo[i]['clrnet_period'],
         ));
       }
       return NotificationListener<TaskNotification>(
