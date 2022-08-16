@@ -224,7 +224,6 @@ class _TaskItemState extends State<TaskItem> {
                                         style: TextStyle(
                                           color: Colors.red,
                                         ),
-                                        
                                       ),
                                     )
                                   : const SizedBox(),
@@ -244,7 +243,12 @@ class _TaskItemState extends State<TaskItem> {
                       ),
                       Modal(
                         visible: showOnlineVideo,
-                        onClose: () => setState(() => showOnlineVideo = false),
+                        onClose: () {
+                          setState(() {
+                            showOnlineVideo = false;
+                            player.stop();
+                          });
+                        },
                         modal: Dialog(
                           child: SizedBox(
                             width: 1920 / 2,
