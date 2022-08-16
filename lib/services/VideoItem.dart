@@ -37,10 +37,10 @@ class _VideoItem extends State<VideoItem> {
     return TextButton(
       onPressed: () 
       {
-        VideoItemNotification(checkedIndex: widget.index).dispatch(context);
         setState(() {
           global.config["video_name"] = widget.videoname;
         });
+        VideoItemNotification(checkedIndex: widget.index).dispatch(context);
       },
       //=> VideoItemNotification(checkedIndex: widget.index).dispatch(context),
       // onPressed: ()

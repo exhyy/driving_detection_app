@@ -127,7 +127,7 @@ class _SubmitTaskState extends State<SubmitTask> {
               value: _dropValue_backnone,
               isExpanded: true,
               items: l_backbone,
-              hint: Text('请选择CLR的backbone'),
+              hint: Text('请选择CLR模型对应的backbone'),
               onChanged: (value) {
                 setState(() {
                   _dropValue_backnone = value.toString();
@@ -300,6 +300,7 @@ class _SubmitTaskState extends State<SubmitTask> {
                         trailing: MaterialButton(
                           child: const Text("提交"),
                           onPressed: () async {
+                            print(global.config);
                             setState(() {
                               global.config['name'] = _titleTxt.text;
                             });
