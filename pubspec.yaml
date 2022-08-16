@@ -46,6 +46,8 @@ dependencies:
   flutter_number_picker: ^1.0.4
   dio: ^4.0.6
   dart_vlc: ^0.3.0
+  internet_file: ^1.2.0
+  percent_indicator: ^4.2.2
   
 dev_dependencies:
   flutter_test:

@@ -8,6 +8,7 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:dio/dio.dart';
 import 'package:driving_detection_app/services/multipart_request.dart';
 import 'dart:io';
+import 'package:driving_detection_app/services/notification.dart';
 
 class SubmitTask extends StatefulWidget {
   const SubmitTask({
@@ -311,7 +312,9 @@ class _SubmitTaskState extends State<SubmitTask> {
                               },
                             );
                             Dio dio = Dio(options);
-                            Response res = await dio.post('http://127.0.0.1:5000/submit', data: global.config);
+                            Response res = await dio.post(
+                                'http://127.0.0.1:5000/submit',
+                                data: global.config);
                           },
                         ),
                       ),
@@ -325,26 +328,30 @@ class _SubmitTaskState extends State<SubmitTask> {
             )
           : Loading(
               onLoading: () async {
-                final client = http.Client();
-                final url = Uri.parse("http://127.0.0.1:5000/videolist");
-                final response = await client.get(url);
-                if (response.statusCode != 0) {
+                try {
+                  final client = http.Client();
+                  final url = Uri.parse("http://127.0.0.1:5000/videolist");
+                  final response = await client.get(url);
+                  if (response.statusCode != 0) {
+                    setState(() {
+                      videonames = jsonDecode(response.body)["namesofvideo"]
+                          .cast<String>();
+                      global.config['video_name'] = videonames[0];
+                      weightsofyolo =
+                          jsonDecode(response.body)["weightsofyolov5"]
+                              .cast<String>();
+                      weightsofCLR = jsonDecode(response.body)["weightsofCLR"]
+                          .cast<String>();
+                    });
+                  } else {
+                    print(response.statusCode);
+                  }
                   setState(() {
-                    videonames = jsonDecode(response.body)["namesofvideo"]
-                        .cast<String>();
-                    global.config['video_name']=videonames[0];
-                    weightsofyolo = jsonDecode(response.body)["weightsofyolov5"]
-                        .cast<String>();
-                    weightsofCLR = jsonDecode(response.body)["weightsofCLR"]
-                        .cast<String>();
+                    loadingFinishedsubmit = true;
                   });
-                  print(videonames);
-                } else {
-                  print(response.statusCode);
+                } catch (e) {
+                  PageJumpNotification(page: 0).dispatch(context);
                 }
-                setState(() {
-                  loadingFinishedsubmit = true;
-                });
               },
             );
     });

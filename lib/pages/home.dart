@@ -3,14 +3,16 @@ import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:driving_detection_app/pages/upload_resource.dart';
 import 'package:driving_detection_app/pages/submit_task.dart';
 import 'package:driving_detection_app/pages/task_list.dart';
-class global
-{
-  static Map config ={
-    "name":"",
+import 'package:driving_detection_app/pages/error.dart';
+import 'package:driving_detection_app/services/notification.dart';
+
+class global {
+  static Map config = {
+    "name": "",
     "video_name": "",
     "yolov5_model_name": "",
-    "clrnet_model_name":"",
-    "clrnet_backbone":"",
+    "clrnet_model_name": "",
+    "clrnet_backbone": "",
     "yolov5_period": 1,
     "clrnet_period": 1,
   };
@@ -24,26 +26,28 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  PageController page = PageController();
+  PageController page = PageController(
+    initialPage: 1,
+  );
   late List<SideMenuItem> sideMenuItems;
   _HomeState() {
     sideMenuItems = [
       SideMenuItem(
         priority: 0,
         title: '提交任务',
-        onTap: () => page.jumpToPage(0),
+        onTap: () => page.jumpToPage(1),
         icon: const Icon(Icons.add_task),
       ),
       SideMenuItem(
         priority: 1,
         title: '上传资源',
-        onTap: () => page.jumpToPage(1),
+        onTap: () => page.jumpToPage(2),
         icon: const Icon(Icons.upload_file),
       ),
       SideMenuItem(
         priority: 2,
         title: '任务列表',
-        onTap: () => page.jumpToPage(2),
+        onTap: () => page.jumpToPage(3),
         icon: const Icon(Icons.format_list_bulleted_rounded),
       ),
     ];
@@ -83,13 +87,20 @@ class _HomeState extends State<Home> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8),
-              child: PageView(
-                controller: page,
-                children: [
-                  SubmitTask(),
-                  UploadResource(),
-                  TaskList(),
-                ],
+              child: NotificationListener<PageJumpNotification>(
+                onNotification: (notification) {
+                  page.jumpToPage(notification.page);
+                  return true;
+                },
+                child: PageView(
+                  controller: page,
+                  children: [
+                    ErrorPage(),
+                    SubmitTask(),
+                    UploadResource(),
+                    TaskList(),
+                  ],
+                ),
               ),
             ),
           )

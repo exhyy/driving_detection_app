@@ -11,7 +11,9 @@ import 'package:http/http.dart' as http;
 class UploadWidget extends StatefulWidget {
   final String defaultMessage;
   final String uploadUrl;
-  const UploadWidget({Key? key, required this.defaultMessage, required this.uploadUrl}) : super(key: key);
+  const UploadWidget(
+      {Key? key, required this.defaultMessage, required this.uploadUrl})
+      : super(key: key);
 
   @override
   State<UploadWidget> createState() => _UploadWidgetState();
@@ -77,7 +79,8 @@ class _UploadWidgetState extends State<UploadWidget> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 38.0),
-              child: Text(sprintf('%2d %%', [int.parse((_progress*100).toString().split('.')[0])])),
+              child: Text(sprintf('%2d %%',
+                  [int.parse((_progress * 100).toString().split('.')[0])])),
             ),
           ],
         ),

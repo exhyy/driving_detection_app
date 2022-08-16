@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:driving_detection_app/services/task.dart';
 import 'package:http/http.dart' as http;
 import 'package:driving_detection_app/services/loading.dart';
+import 'package:driving_detection_app/services/notification.dart';
 
 class TaskList extends StatefulWidget {
   const TaskList({Key? key}) : super(key: key);
@@ -49,13 +50,19 @@ class _TaskListState extends State<TaskList> {
               }
               firstRequest = false;
             });
-          } catch (e) {}
+          } catch (e) {
+            PageJumpNotification(page: 0).dispatch(context);
+          }
         },
       );
     } else {
       Future.delayed(const Duration(milliseconds: 500), () async {
         try {
-          await getData();
+          try {
+            await getData();
+          } catch (e) {
+            PageJumpNotification(page: 0).dispatch(context);
+          }
           setState(() {});
         } catch (e) {}
       });
