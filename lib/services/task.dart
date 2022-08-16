@@ -8,12 +8,7 @@ import 'package:dart_vlc/dart_vlc.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:internet_file/internet_file.dart';
 import 'package:internet_file/storage_io.dart';
-
-class TaskNotification extends Notification {
-  final String type; // 'detail'或'delete'
-  final int taskId;
-  TaskNotification({required this.type, required this.taskId});
-}
+import 'package:driving_detection_app/services/notification.dart';
 
 class TaskItem extends StatefulWidget {
   const TaskItem(
