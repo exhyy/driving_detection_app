@@ -46,6 +46,7 @@ class _TaskListState extends State<TaskList> {
                   clrnetBackbone: taskInfo[i]['clrnet_backbone'],
                   yolov5Period: taskInfo[i]['yolov5_period'],
                   clrnetPeriod: taskInfo[i]['clrnet_period'],
+                  errorMessage: taskInfo[i]['err_msg'],
                 ));
               }
               firstRequest = false;
@@ -80,6 +81,7 @@ class _TaskListState extends State<TaskList> {
           clrnetBackbone: taskInfo[i]['clrnet_backbone'],
           yolov5Period: taskInfo[i]['yolov5_period'],
           clrnetPeriod: taskInfo[i]['clrnet_period'],
+          errorMessage: taskInfo[i]['err_msg'],
         ));
       }
       return NotificationListener<TaskNotification>(

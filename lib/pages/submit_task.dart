@@ -49,7 +49,7 @@ class _SubmitTaskState extends State<SubmitTask> {
   static List<String> weightsofCLR = [];
   static List<String> backbones = ['Resnet18', 'Resnet34', 'm3s', 'm3l'];
   bool loadingFinishedsubmit = false;
-  int checkedIndex = 0;
+  int checkedIndex = -1;
   var _dropValue_yolo = null;
   var _dropValue_CLR = null;
   var _dropValue_backnone = null;
@@ -344,7 +344,7 @@ class _SubmitTaskState extends State<SubmitTask> {
                     setState(() {
                       videonames = jsonDecode(response.body)["namesofvideo"]
                           .cast<String>();
-                      global.config['video_name'] = videonames[0];
+                      // global.config['video_name'] = videonames[0];
                       weightsofyolo =
                           jsonDecode(response.body)["weightsofyolov5"]
                               .cast<String>();

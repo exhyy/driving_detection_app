@@ -22,7 +22,8 @@ class TaskItem extends StatefulWidget {
       required this.clrnetModelName,
       required this.clrnetBackbone,
       required this.yolov5Period,
-      required this.clrnetPeriod})
+      required this.clrnetPeriod,
+      required this.errorMessage})
       : super(key: key);
   final String taskName;
   final String taskStatus;
@@ -34,6 +35,7 @@ class TaskItem extends StatefulWidget {
   final String clrnetBackbone;
   final int yolov5Period;
   final int clrnetPeriod;
+  final String errorMessage;
 
   @override
   State<TaskItem> createState() => _TaskItemState();
@@ -73,8 +75,8 @@ class _TaskItemState extends State<TaskItem> {
   @override
   Widget build(BuildContext context) {
     final Widget statusIcon;
-    final media =
-        Media.network('http://127.0.0.1:5000/onlinevideo/${widget.taskName}_${widget.videoName}');
+    final media = Media.network(
+        'http://127.0.0.1:5000/onlinevideo/${widget.taskName}_${widget.videoName}');
     if (widget.taskStatus == 'waiting') {
       statusIcon = const Padding(
         padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -209,6 +211,23 @@ class _TaskItemState extends State<TaskItem> {
                                 leading: const Text('CLRNet处理周期'),
                                 title: Text(widget.clrnetPeriod.toString()),
                               ),
+                              widget.taskStatus == 'fail'
+                                  ? ListTile(
+                                      leading: const Text(
+                                        '错误信息',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                      title: Text(
+                                        widget.errorMessage,
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                        ),
+                                        
+                                      ),
+                                    )
+                                  : const SizedBox(),
                             ],
                           ),
                         )),
