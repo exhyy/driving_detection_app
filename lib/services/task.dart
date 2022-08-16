@@ -66,7 +66,7 @@ class _TaskItemState extends State<TaskItem> {
         }
       },
       storageAdditional: storageIO.additional(
-        filename: widget.videoName,
+        filename: '${widget.taskName}_${widget.videoName}',
         location: './download/',
       ),
     );
