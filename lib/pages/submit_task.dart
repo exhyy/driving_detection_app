@@ -36,11 +36,11 @@ class _SubmitTaskState extends State<SubmitTask> {
       value: '1',
     ),
     const DropdownMenuItem(
-      child: Text('m3s'),
+      child: Text('mobilenetv3s'),
       value: '2',
     ),
     const DropdownMenuItem(
-      child: Text('m3l'),
+      child: Text('mobilenetv3l'),
       value: '3',
     ),
   ];
@@ -48,7 +48,7 @@ class _SubmitTaskState extends State<SubmitTask> {
   static List<String> weightsofyolo = [];
   static List<String> weightsofCLR = [];
   static List<String> backbones = ['Resnet18', 'Resnet34', 'm3s', 'm3l'];
-  static bool loadingFinishedsubmit = false;
+  bool loadingFinishedsubmit = false;
   int checkedIndex = 0;
   var _dropValue_yolo = null;
   var _dropValue_CLR = null;
@@ -187,6 +187,7 @@ class _SubmitTaskState extends State<SubmitTask> {
                     onPressed: () => setState(() {
                       final newValue = _currentValueofyolo + 1;
                       _currentValueofyolo = newValue.clamp(1, 5);
+                      global.config["clrnet_period"] = _currentValueofyolo;
                     }),
                   ),
                 ],
@@ -203,8 +204,13 @@ class _SubmitTaskState extends State<SubmitTask> {
                   minValue: 1,
                   maxValue: 5,
                   haptics: true,
-                  onChanged: (value) =>
-                      setState(() => _currentValueofCLR = value),
+                  onChanged: (value){
+                    setState(() 
+                      {
+                        _currentValueofCLR = value;
+                        global.config["clrnet_period"] = _currentValueofCLR;
+                      });
+                  },
                 ),
               ),
               Row(
@@ -215,6 +221,7 @@ class _SubmitTaskState extends State<SubmitTask> {
                     onPressed: () => setState(() {
                       final newValue = _currentValueofCLR - 1;
                       _currentValueofCLR = newValue.clamp(1, 5);
+                      global.config["clrnet_period"] = _currentValueofCLR;
                     }),
                   ),
                   Text('Current int value: $_currentValueofCLR'),
@@ -223,6 +230,7 @@ class _SubmitTaskState extends State<SubmitTask> {
                     onPressed: () => setState(() {
                       final newValue = _currentValueofCLR + 1;
                       _currentValueofCLR = newValue.clamp(1, 5);
+                      global.config["clrnet_period"] = _currentValueofCLR;
                     }),
                   ),
                 ],
@@ -350,7 +358,7 @@ class _SubmitTaskState extends State<SubmitTask> {
                     loadingFinishedsubmit = true;
                   });
                 } catch (e) {
-                  PageJumpNotification(page: 0).dispatch(context);
+                  PageJumpNotification(page: 3).dispatch(context);
                 }
               },
             );

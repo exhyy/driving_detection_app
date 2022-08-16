@@ -51,7 +51,7 @@ class _TaskItemState extends State<TaskItem> {
     final storageIO = InternetFileStorageIO();
 
     await InternetFile.get(
-      'http://127.0.0.1:5000/downloadoutput/${widget.videoName}',
+      'http://127.0.0.1:5000/downloadoutput/${widget.taskName}_${widget.videoName}',
       storage: storageIO,
       progress: (receivedLength, contentLength) {
         _tempProgress = receivedLength / contentLength;
@@ -74,7 +74,7 @@ class _TaskItemState extends State<TaskItem> {
   Widget build(BuildContext context) {
     final Widget statusIcon;
     final media =
-        Media.network('http://127.0.0.1:5000/onlinevideo/${widget.videoName}');
+        Media.network('http://127.0.0.1:5000/onlinevideo/${widget.taskName}_${widget.videoName}');
     if (widget.taskStatus == 'waiting') {
       statusIcon = const Padding(
         padding: EdgeInsets.fromLTRB(20, 0, 0, 0),

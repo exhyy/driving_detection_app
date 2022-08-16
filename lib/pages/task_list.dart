@@ -51,7 +51,7 @@ class _TaskListState extends State<TaskList> {
               firstRequest = false;
             });
           } catch (e) {
-            PageJumpNotification(page: 0).dispatch(context);
+            PageJumpNotification(page: 3).dispatch(context);
           }
         },
       );
@@ -61,7 +61,7 @@ class _TaskListState extends State<TaskList> {
           try {
             await getData();
           } catch (e) {
-            PageJumpNotification(page: 0).dispatch(context);
+            PageJumpNotification(page: 3).dispatch(context);
           }
           setState(() {});
         } catch (e) {}

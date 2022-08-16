@@ -27,7 +27,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   PageController page = PageController(
-    initialPage: 1,
+    initialPage: 0,
   );
   late List<SideMenuItem> sideMenuItems;
   _HomeState() {
@@ -35,19 +35,19 @@ class _HomeState extends State<Home> {
       SideMenuItem(
         priority: 0,
         title: '提交任务',
-        onTap: () => page.jumpToPage(1),
+        onTap: () => page.jumpToPage(0),
         icon: const Icon(Icons.add_task),
       ),
       SideMenuItem(
         priority: 1,
         title: '上传资源',
-        onTap: () => page.jumpToPage(2),
+        onTap: () => page.jumpToPage(1),
         icon: const Icon(Icons.upload_file),
       ),
       SideMenuItem(
         priority: 2,
         title: '任务列表',
-        onTap: () => page.jumpToPage(3),
+        onTap: () => page.jumpToPage(2),
         icon: const Icon(Icons.format_list_bulleted_rounded),
       ),
     ];
@@ -95,10 +95,10 @@ class _HomeState extends State<Home> {
                 child: PageView(
                   controller: page,
                   children: [
-                    ErrorPage(),
                     SubmitTask(),
                     UploadResource(),
                     TaskList(),
+                    ErrorPage(),
                   ],
                 ),
               ),
