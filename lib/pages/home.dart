@@ -55,43 +55,43 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<NetworkErrorNotification>(
-      onNotification: (notification) {
-        page.jumpTo(0);
-        return true;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Demo'),
-          centerTitle: true,
-          elevation: 0,
-          backgroundColor: Colors.lightBlue,
-        ),
-        body: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SideMenu(
-              controller: page,
-              title: const SizedBox(
-                height: 6.0,
-              ),
-              footer: const Text('demo'),
-              items: sideMenuItems,
-              style: SideMenuStyle(
-                displayMode: SideMenuDisplayMode.auto,
-                decoration: const BoxDecoration(),
-                hoverColor: Colors.blue[100],
-                selectedColor: Colors.lightBlue[100],
-                selectedIconColor: Colors.grey[500],
-                unselectedIconColor: Colors.grey[500],
-                backgroundColor: Colors.grey[200],
-                selectedTitleTextStyle: const TextStyle(color: Colors.black),
-                unselectedTitleTextStyle: const TextStyle(color: Colors.black),
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Demo'),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.lightBlue,
+      ),
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SideMenu(
+            controller: page,
+            title: const SizedBox(
+              height: 6.0,
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8),
+            footer: const Text('demo'),
+            items: sideMenuItems,
+            style: SideMenuStyle(
+              displayMode: SideMenuDisplayMode.auto,
+              decoration: const BoxDecoration(),
+              hoverColor: Colors.blue[100],
+              selectedColor: Colors.lightBlue[100],
+              selectedIconColor: Colors.grey[500],
+              unselectedIconColor: Colors.grey[500],
+              backgroundColor: Colors.grey[200],
+              selectedTitleTextStyle: const TextStyle(color: Colors.black),
+              unselectedTitleTextStyle: const TextStyle(color: Colors.black),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: NotificationListener<PageJumpNotification>(
+                onNotification: (notification) {
+                  page.jumpToPage(notification.page);
+                  return true;
+                },
                 child: PageView(
                   controller: page,
                   children: [
@@ -102,9 +102,9 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -349,7 +349,7 @@ class _SubmitTaskState extends State<SubmitTask> {
                     loadingFinishedsubmit = true;
                   });
                 } catch (e) {
-                  NetworkErrorNotification().dispatch(context);
+                  PageJumpNotification(page: 0).dispatch(context);
                 }
               },
             );

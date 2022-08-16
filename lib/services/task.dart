@@ -88,12 +88,20 @@ class _TaskItemState extends State<TaskItem> {
           size: 20,
         ),
       );
-    } else {
+    } else if (widget.taskStatus == 'done') {
       statusIcon = const Padding(
         padding: EdgeInsets.fromLTRB(28, 0, 0, 0),
         child: Icon(
           Icons.check,
           color: Colors.blue,
+        ),
+      );
+    } else {
+      statusIcon = const Padding(
+        padding: EdgeInsets.fromLTRB(28, 0, 0, 0),
+        child: Icon(
+          Icons.error_outline_rounded,
+          color: Colors.red,
         ),
       );
     }

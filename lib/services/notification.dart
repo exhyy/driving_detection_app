@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-class NetworkErrorNotification extends Notification {
-  NetworkErrorNotification();
+class PageJumpNotification extends Notification {
+  final int page;
+  PageJumpNotification({required this.page});
 }
 
 class TaskNotification extends Notification {
