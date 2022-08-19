@@ -1,14 +1,13 @@
 import 'dart:convert';
 import 'package:driving_detection_app/pages/home.dart';
 import 'package:flutter/material.dart';
-import 'package:driving_detection_app/services/VideoItem.dart';
+import 'package:driving_detection_app/services/video_item.dart';
 import 'package:driving_detection_app/services/loading.dart';
 import 'package:http/http.dart' as http;
 import 'package:numberpicker/numberpicker.dart';
 import 'package:dio/dio.dart';
-import 'package:driving_detection_app/services/multipart_request.dart';
-import 'dart:io';
 import 'package:driving_detection_app/services/notification.dart';
+import 'package:number_selector/number_selector.dart';
 
 class SubmitTask extends StatefulWidget {
   const SubmitTask({
@@ -20,7 +19,7 @@ class SubmitTask extends StatefulWidget {
 }
 
 class _SubmitTaskState extends State<SubmitTask> {
-  var _titleTxt = new TextEditingController();
+  var _titleTxt = TextEditingController();
   int _currentValueofyolo = 1;
   int _currentValueofCLR = 1;
   List<Widget> l_image = [];
@@ -36,11 +35,11 @@ class _SubmitTaskState extends State<SubmitTask> {
       value: '1',
     ),
     const DropdownMenuItem(
-      child: Text('mobilenetv3s'),
+      child: Text('MobileNetV3 small'),
       value: '2',
     ),
     const DropdownMenuItem(
-      child: Text('mobilenetv3l'),
+      child: Text('MobileNetV3 large'),
       value: '3',
     ),
   ];
@@ -60,7 +59,7 @@ class _SubmitTaskState extends State<SubmitTask> {
     l_yolo = [];
     for (int i = 0; i < videonames.length; i++) {
       l_image.add(VideoItem(
-          downloadUrl: "http://127.0.0.1:5000/download/",
+          downloadUrl: "${Global.appConfig['server_url']}/download/",
           videoname: videonames[i],
           index: i,
           checked: checkedIndex == i));
@@ -95,11 +94,11 @@ class _SubmitTaskState extends State<SubmitTask> {
           value: _dropValue_yolo,
           isExpanded: true,
           items: l_yolo,
-          hint: Text('请选择yolo的模型文件'),
+          hint: const Text('请选择yolo的模型文件'),
           onChanged: (value) {
             setState(() {
               _dropValue_yolo = value.toString();
-              global.config["yolov5_model_name"] =
+              Global.config["yolov5_model_name"] =
                   weightsofyolo[int.parse(value.toString())];
             });
           },
@@ -113,11 +112,11 @@ class _SubmitTaskState extends State<SubmitTask> {
               value: _dropValue_CLR,
               isExpanded: true,
               items: l_CLR,
-              hint: Text('请选择CLR的模型文件'),
+              hint: const Text('请选择CLR的模型文件'),
               onChanged: (value) {
                 setState(() {
                   _dropValue_CLR = value.toString();
-                  global.config["clrnet_model_name"] =
+                  Global.config["clrnet_model_name"] =
                       weightsofCLR[int.parse(value.toString())];
                 });
               },
@@ -128,11 +127,11 @@ class _SubmitTaskState extends State<SubmitTask> {
               value: _dropValue_backnone,
               isExpanded: true,
               items: l_backbone,
-              hint: Text('请选择CLR模型对应的backbone'),
+              hint: const Text('请选择CLR模型对应的backbone'),
               onChanged: (value) {
                 setState(() {
                   _dropValue_backnone = value.toString();
-                  global.config["clrnet_backbone"] =
+                  Global.config["clrnet_backbone"] =
                       backbones[int.parse(value.toString())];
                 });
               },
@@ -158,40 +157,57 @@ class _SubmitTaskState extends State<SubmitTask> {
             children: [
               Text('For Yolo', style: Theme.of(context).textTheme.headline6),
               Center(
-                child: NumberPicker(
-                    value: _currentValueofyolo,
-                    minValue: 1,
-                    maxValue: 5,
-                    haptics: true,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentValueofyolo = value;
-                        global.config["yolov5_period"] = _currentValueofyolo;
-                      });
-                    }),
+                child: NumberSelector(
+                  current: _currentValueofyolo,
+                  min: 1,
+                  max: 5,
+                  showMinMax: false,
+                  showSuffix: false,
+                  hasDividers: false,
+                  hasCenteredText: true,
+                  incrementIcon: Icons.add,
+                  decrementIcon: Icons.remove,
+                  onUpdate: (number) {
+                    setState(() {
+                      _currentValueofyolo = number;
+                      Global.config['yolov5_period'] = _currentValueofyolo;
+                    });
+                  },
+                ),
+                // child: NumberPicker(
+                //     value: _currentValueofyolo,
+                //     minValue: 1,
+                //     maxValue: 5,
+                //     haptics: true,
+                //     onChanged: (value) {
+                //       setState(() {
+                //         _currentValueofyolo = value;
+                //         Global.config["yolov5_period"] = _currentValueofyolo;
+                //       });
+                //     }),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.remove),
-                    onPressed: () => setState(() {
-                      final newValue = _currentValueofyolo - 1;
-                      _currentValueofyolo = newValue.clamp(1, 5);
-                      global.config["clrnet_period"] = _currentValueofyolo;
-                    }),
-                  ),
-                  Text('Current int value: $_currentValueofyolo'),
-                  IconButton(
-                    icon: Icon(Icons.add),
-                    onPressed: () => setState(() {
-                      final newValue = _currentValueofyolo + 1;
-                      _currentValueofyolo = newValue.clamp(1, 5);
-                      global.config["clrnet_period"] = _currentValueofyolo;
-                    }),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     IconButton(
+              //       icon: const Icon(Icons.remove),
+              //       onPressed: () => setState(() {
+              //         final newValue = _currentValueofyolo - 1;
+              //         _currentValueofyolo = newValue.clamp(1, 5);
+              //         Global.config["clrnet_period"] = _currentValueofyolo;
+              //       }),
+              //     ),
+              //     Text('Current int value: $_currentValueofyolo'),
+              //     IconButton(
+              //       icon: const Icon(Icons.add),
+              //       onPressed: () => setState(() {
+              //         final newValue = _currentValueofyolo + 1;
+              //         _currentValueofyolo = newValue.clamp(1, 5);
+              //         Global.config["clrnet_period"] = _currentValueofyolo;
+              //       }),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
           // SizedBox(width: MediaQuery.of(context).size.width*1/3,),
@@ -199,42 +215,58 @@ class _SubmitTaskState extends State<SubmitTask> {
             children: [
               Text('For CLR', style: Theme.of(context).textTheme.headline6),
               Center(
-                child: NumberPicker(
-                  value: _currentValueofCLR,
-                  minValue: 1,
-                  maxValue: 5,
-                  haptics: true,
-                  onChanged: (value){
-                    setState(() 
-                      {
-                        _currentValueofCLR = value;
-                        global.config["clrnet_period"] = _currentValueofCLR;
-                      });
+                child: NumberSelector(
+                  current: _currentValueofCLR,
+                  min: 1,
+                  max: 5,
+                  showMinMax: false,
+                  showSuffix: false,
+                  hasDividers: false,
+                  hasCenteredText: true,
+                  incrementIcon: Icons.add,
+                  decrementIcon: Icons.remove,
+                  onUpdate: (number) {
+                    setState(() {
+                      _currentValueofCLR = number;
+                      Global.config['clrnet_period'] = _currentValueofCLR;
+                    });
                   },
                 ),
+                // child: NumberPicker(
+                //   value: _currentValueofCLR,
+                //   minValue: 1,
+                //   maxValue: 5,
+                //   haptics: true,
+                //   onChanged: (value) {
+                //     setState(() {
+                //       _currentValueofCLR = value;
+                //       Global.config["clrnet_period"] = _currentValueofCLR;
+                //     });
+                //   },
+                // ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.remove),
-                    onPressed: () => setState(() {
-                      final newValue = _currentValueofCLR - 1;
-                      _currentValueofCLR = newValue.clamp(1, 5);
-                      global.config["clrnet_period"] = _currentValueofCLR;
-                    }),
-                  ),
-                  Text('Current int value: $_currentValueofCLR'),
-                  IconButton(
-                    icon: Icon(Icons.add),
-                    onPressed: () => setState(() {
-                      final newValue = _currentValueofCLR + 1;
-                      _currentValueofCLR = newValue.clamp(1, 5);
-                      global.config["clrnet_period"] = _currentValueofCLR;
-                    }),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     IconButton(
+              //       icon: const Icon(Icons.remove),
+              //       onPressed: () => setState(() {
+              //         final newValue = _currentValueofCLR - 1;
+              //         _currentValueofCLR = newValue.clamp(1, 5);
+              //         Global.config["clrnet_period"] = _currentValueofCLR;
+              //       }),
+              //     ),
+              //     Text('Current int value: $_currentValueofCLR'),
+              //     IconButton(
+              //       icon: const Icon(Icons.add),
+              //       onPressed: () => setState(() {
+              //         final newValue = _currentValueofCLR + 1;
+              //         _currentValueofCLR = newValue.clamp(1, 5);
+              //         Global.config["clrnet_period"] = _currentValueofCLR;
+              //       }),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ],
@@ -295,10 +327,11 @@ class _SubmitTaskState extends State<SubmitTask> {
                       Column(
                         children: children2,
                       ),
+                      const Divider(),
                       ListTile(
                         title: TextField(
                           controller: _titleTxt,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             contentPadding: EdgeInsets.all(10.0),
                             labelText: '任务名称',
                             hintText: '示例:MyTask',
@@ -306,12 +339,12 @@ class _SubmitTaskState extends State<SubmitTask> {
                             border: OutlineInputBorder(),
                           ),
                         ),
-                        trailing: MaterialButton(
+                        trailing: ElevatedButton(
                           child: const Text("提交"),
                           onPressed: () async {
-                            print(global.config);
+                            print(Global.config);
                             setState(() {
-                              global.config['name'] = _titleTxt.text;
+                              Global.config['name'] = _titleTxt.text;
                             });
                             BaseOptions options = BaseOptions(
                               method: "post",
@@ -321,14 +354,14 @@ class _SubmitTaskState extends State<SubmitTask> {
                             );
                             Dio dio = Dio(options);
                             Response res = await dio.post(
-                                'http://127.0.0.1:5000/submit',
-                                data: global.config);
+                                '${Global.appConfig['server_url']}/submit',
+                                data: Global.config);
                           },
                         ),
                       ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 3 / 7,
-                      )
+                      // SizedBox(
+                      //   height: MediaQuery.of(context).size.height * 3 / 7,
+                      // )
                     ],
                   ),
                 ],
@@ -338,7 +371,7 @@ class _SubmitTaskState extends State<SubmitTask> {
               onLoading: () async {
                 try {
                   final client = http.Client();
-                  final url = Uri.parse("http://127.0.0.1:5000/videolist");
+                  final url = Uri.parse("${Global.appConfig['server_url']}/videolist");
                   final response = await client.get(url);
                   if (response.statusCode != 0) {
                     setState(() {

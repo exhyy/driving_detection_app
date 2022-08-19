@@ -6,6 +6,7 @@ import 'package:driving_detection_app/services/task.dart';
 import 'package:http/http.dart' as http;
 import 'package:driving_detection_app/services/loading.dart';
 import 'package:driving_detection_app/services/notification.dart';
+import 'package:driving_detection_app/pages/home.dart';
 
 class TaskList extends StatefulWidget {
   const TaskList({Key? key}) : super(key: key);
@@ -21,7 +22,8 @@ class _TaskListState extends State<TaskList> {
   bool firstRequest = true;
 
   Future<void> getData() async {
-    response = await http.get(Uri.parse('http://127.0.0.1:5000/tasklist'));
+    response =
+        await http.get(Uri.parse('${Global.appConfig['server_url']}/tasklist'));
     taskInfo = json.decode(response.body);
   }
 
@@ -88,7 +90,7 @@ class _TaskListState extends State<TaskList> {
         onNotification: (notification) {
           if (notification.type == 'delete') {
             http.get(Uri.parse(
-                'http://127.0.0.1:5000/taskdelete/${notification.taskId}'));
+                '${Global.appConfig['server_url']}/taskdelete/${notification.taskId}'));
           } else if (notification.type == 'detail') {}
           return true;
         },

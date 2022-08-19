@@ -6,7 +6,7 @@ import 'package:driving_detection_app/pages/task_list.dart';
 import 'package:driving_detection_app/pages/error.dart';
 import 'package:driving_detection_app/services/notification.dart';
 
-class global {
+class Global {
   static Map config = {
     "name": "",
     "video_name": "",
@@ -16,6 +16,7 @@ class global {
     "yolov5_period": 1,
     "clrnet_period": 1,
   };
+  static late Map appConfig;
 }
 
 class Home extends StatefulWidget {
@@ -57,7 +58,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Demo'),
+        title: const Text('Driving Detection APP'),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.lightBlue,
@@ -70,7 +71,6 @@ class _HomeState extends State<Home> {
             title: const SizedBox(
               height: 6.0,
             ),
-            footer: const Text('demo'),
             items: sideMenuItems,
             style: SideMenuStyle(
               displayMode: SideMenuDisplayMode.auto,

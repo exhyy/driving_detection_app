@@ -9,6 +9,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:internet_file/internet_file.dart';
 import 'package:internet_file/storage_io.dart';
 import 'package:driving_detection_app/services/notification.dart';
+import 'package:driving_detection_app/pages/home.dart';
 
 class TaskItem extends StatefulWidget {
   const TaskItem(
@@ -53,7 +54,7 @@ class _TaskItemState extends State<TaskItem> {
     final storageIO = InternetFileStorageIO();
 
     await InternetFile.get(
-      'http://127.0.0.1:5000/downloadoutput/${widget.taskName}_${widget.videoName}',
+      '${Global.appConfig['server_url']}/downloadoutput/${widget.taskName}_${widget.videoName}',
       storage: storageIO,
       progress: (receivedLength, contentLength) {
         _tempProgress = receivedLength / contentLength;
@@ -76,7 +77,7 @@ class _TaskItemState extends State<TaskItem> {
   Widget build(BuildContext context) {
     final Widget statusIcon;
     final media = Media.network(
-        'http://127.0.0.1:5000/onlinevideo/${widget.taskName}_${widget.videoName}');
+        '${Global.appConfig['server_url']}/onlinevideo/${widget.taskName}_${widget.videoName}');
     if (widget.taskStatus == 'waiting') {
       statusIcon = const Padding(
         padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -221,7 +222,7 @@ class _TaskItemState extends State<TaskItem> {
                                       ),
                                       title: Text(
                                         widget.errorMessage,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.red,
                                         ),
                                       ),

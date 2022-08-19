@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:driving_detection_app/services/upload.dart';
+import 'package:driving_detection_app/pages/home.dart';
 
 class UploadResource extends StatelessWidget {
   const UploadResource({Key? key}) : super(key: key);
@@ -7,20 +8,20 @@ class UploadResource extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: const [
+      children: [
         UploadWidget(
           defaultMessage: '上传视频',
-          uploadUrl: 'http://127.0.0.1:5000/upload/video',
+          uploadUrl: '${Global.appConfig['server_url']}/upload/video',
         ),
-        Divider(),
+        const Divider(),
         UploadWidget(
           defaultMessage: '上传物体检测模型(yolov5s)',
-          uploadUrl: 'http://127.0.0.1:5000/upload/od_model',
+          uploadUrl: '${Global.appConfig['server_url']}/upload/od_model',
         ),
-        Divider(),
+        const Divider(),
         UploadWidget(
-          defaultMessage: '上传车道监测模型(CLRNet)',
-          uploadUrl: 'http://127.0.0.1:5000/upload/ld_model',
+          defaultMessage: '上传车道检测模型(CLRNet)',
+          uploadUrl: '${Global.appConfig['server_url']}/upload/ld_model',
         ),
       ],
     );

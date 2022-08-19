@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:driving_detection_app/services/multipart_request.dart';
+import 'package:driving_detection_app/services/modal.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:progresso/progresso.dart';
@@ -22,6 +23,8 @@ class UploadWidget extends StatefulWidget {
 class _UploadWidgetState extends State<UploadWidget> {
   String _filePath = '';
   double _progress = 0.0;
+  bool _showModal = false;
+  String _errorInfo = '';
 
   @override
   Widget build(BuildContext context) {
@@ -84,26 +87,61 @@ class _UploadWidgetState extends State<UploadWidget> {
             ),
           ],
         ),
-        TextButton(
-          child: const Text('上传'),
-          onPressed: () async {
-            var request = MultipartRequest(
-              'POST',
-              Uri.parse(widget.uploadUrl),
-              onProgress: (bytes, total) {
-                setState(() {
-                  _progress = bytes / total;
+        Modal(
+          visible: _showModal,
+          modal: Dialog(
+            child: SizedBox(
+              width: 450,
+              height: 200,
+              child: Center(
+                child: Column(
+                  children: [
+                    const Text(
+                      '上传失败',
+                      style: TextStyle(
+                        fontSize: 30,
+                      ),
+                    ),
+                    Text(
+                      _errorInfo,
+                      style: const TextStyle(
+                        fontSize: 14,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          onClose: () => setState(() => _showModal = false),
+          child: TextButton(
+            child: const Text('上传'),
+            onPressed: () async {
+              try {
+                var request = MultipartRequest(
+                  'POST',
+                  Uri.parse(widget.uploadUrl),
+                  onProgress: (bytes, total) {
+                    setState(() {
+                      _progress = bytes / total;
+                    });
+                    log('progress: $_progress ($bytes/$total)');
+                  },
+                );
+                request.files
+                    .add(await http.MultipartFile.fromPath('file', _filePath));
+                var res = await request.send();
+                res.stream.transform(utf8.decoder).listen((event) {
+                  log(event);
                 });
-                log('progress: $_progress ($bytes/$total)');
-              },
-            );
-            request.files
-                .add(await http.MultipartFile.fromPath('file', _filePath));
-            var res = await request.send();
-            res.stream.transform(utf8.decoder).listen((event) {
-              log(event);
-            });
-          },
+              } catch (e) {
+                setState(() {
+                  _showModal = true;
+                  _errorInfo = e.toString();
+                });
+              }
+            },
+          ),
         ),
       ],
     );

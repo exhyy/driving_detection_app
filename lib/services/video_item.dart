@@ -1,11 +1,8 @@
 import 'package:driving_detection_app/pages/home.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_sidemenu/easy_sidemenu.dart';
-import 'package:driving_detection_app/pages/upload_resource.dart';
-import 'package:flutter/rendering.dart';
 
 class VideoItemNotification extends Notification {
-  final checkedIndex;
+  final int checkedIndex;
   VideoItemNotification({required this.checkedIndex});
 }
 
@@ -22,7 +19,7 @@ class VideoItem extends StatefulWidget {
 
 class _VideoItem extends State<VideoItem> {
   int groupValue = 0;
-  Color textcolor = Color.fromARGB(0, 255, 255, 255);
+  Color textcolor = const Color.fromARGB(0, 255, 255, 255);
   //    
 
   @override
@@ -32,13 +29,13 @@ class _VideoItem extends State<VideoItem> {
           ? 1
           : 0;
     textcolor = widget.checked
-          ?Color.fromARGB(120, 122, 118, 118)
-          :Color.fromARGB(0, 255, 255, 255);
+          ?const Color.fromARGB(120, 122, 118, 118)
+          :const Color.fromARGB(0, 255, 255, 255);
     return TextButton(
       onPressed: () 
       {
         setState(() {
-          global.config["video_name"] = widget.videoname;
+          Global.config["video_name"] = widget.videoname;
         });
         VideoItemNotification(checkedIndex: widget.index).dispatch(context);
       },
