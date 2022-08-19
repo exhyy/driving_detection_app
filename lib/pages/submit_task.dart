@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:driving_detection_app/services/video_item.dart';
 import 'package:driving_detection_app/services/loading.dart';
 import 'package:http/http.dart' as http;
-import 'package:numberpicker/numberpicker.dart';
 import 'package:dio/dio.dart';
 import 'package:driving_detection_app/services/notification.dart';
 import 'package:number_selector/number_selector.dart';
@@ -372,7 +371,9 @@ class _SubmitTaskState extends State<SubmitTask> {
                     loadingFinishedsubmit = true;
                   });
                 } catch (e) {
-                  PageJumpNotification(page: 3).dispatch(context);
+                  if(!e.toString().contains('setState()')){
+                    PageJumpNotification(page: 3).dispatch(context);
+                  }
                 }
               },
             );

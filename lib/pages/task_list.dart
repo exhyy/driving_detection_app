@@ -94,10 +94,20 @@ class _TaskListState extends State<TaskList> {
           } else if (notification.type == 'detail') {}
           return true;
         },
-        child: ListView(
+        child: taskList.isNotEmpty
+        ? ListView(
           controller: ScrollController(),
           children: taskList,
-        ),
+        )
+        : const Center(
+          child: Text(
+            '空空如也呢╮(╯﹏╰）╭',
+            style: TextStyle(
+              fontSize: 20
+            ),
+          ),
+        )
+        ,
       );
     }
   }

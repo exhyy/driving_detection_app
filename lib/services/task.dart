@@ -313,7 +313,6 @@ class _TaskItemState extends State<TaskItem> {
           ),
         ),
         IconButton(
-          // icon: const Icon(Icons.delete, color: Colors.red,),
           iconSize: 34,
           icon: widget.taskStatus == 'running'
               ? Icon(

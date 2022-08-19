@@ -93,23 +93,24 @@ class _UploadWidgetState extends State<UploadWidget> {
             child: SizedBox(
               width: 450,
               height: 200,
-              child: Center(
-                child: Column(
-                  children: [
-                    const Text(
+              child: ListView(
+                controller: ScrollController(),
+                children: [
+                  const Center(
+                    child: Text(
                       '上传失败',
                       style: TextStyle(
                         fontSize: 30,
                       ),
                     ),
-                    Text(
-                      _errorInfo,
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                  Text(
+                    _errorInfo,
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                  )
+                ],
               ),
             ),
           ),
@@ -122,9 +123,11 @@ class _UploadWidgetState extends State<UploadWidget> {
                   'POST',
                   Uri.parse(widget.uploadUrl),
                   onProgress: (bytes, total) {
-                    setState(() {
+                    if (bytes / total != 1){
+                      setState(() {
                       _progress = bytes / total;
                     });
+                    }
                     log('progress: $_progress ($bytes/$total)');
                   },
                 );
@@ -133,6 +136,11 @@ class _UploadWidgetState extends State<UploadWidget> {
                 var res = await request.send();
                 res.stream.transform(utf8.decoder).listen((event) {
                   log(event);
+                  if(event.toString() == 'Upload successfully') {
+                    setState(() {
+                      _progress = 1.0;
+                    });
+                  }
                 });
               } catch (e) {
                 setState(() {
