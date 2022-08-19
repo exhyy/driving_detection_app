@@ -149,15 +149,20 @@ class _SubmitTaskState extends State<SubmitTask> {
           fontFamily: "SimHei",
         ),
       ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          // SizedBox(width: MediaQuery.of(context).size.width*1/6,),
-          Column(
-            children: [
-              Text('For Yolo', style: Theme.of(context).textTheme.headline6),
-              Center(
-                child: NumberSelector(
+      SizedBox(
+        width: double.infinity,
+        child: Wrap(
+          textDirection: TextDirection.ltr,
+          alignment: WrapAlignment.spaceEvenly,
+          // spacing: 100, //主轴上子控件的间距2
+          runSpacing: 5, //交叉轴上子控件之间的间距
+          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            // SizedBox(width: MediaQuery.of(context).size.width*1/6,),
+            Column(
+              children: [
+                Text('For Yolo', style: Theme.of(context).textTheme.headline6),
+                NumberSelector(
                   current: _currentValueofyolo,
                   min: 1,
                   max: 5,
@@ -174,48 +179,35 @@ class _SubmitTaskState extends State<SubmitTask> {
                     });
                   },
                 ),
-                // child: NumberPicker(
-                //     value: _currentValueofyolo,
-                //     minValue: 1,
-                //     maxValue: 5,
-                //     haptics: true,
-                //     onChanged: (value) {
-                //       setState(() {
-                //         _currentValueofyolo = value;
-                //         Global.config["yolov5_period"] = _currentValueofyolo;
-                //       });
-                //     }),
-              ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     IconButton(
-              //       icon: const Icon(Icons.remove),
-              //       onPressed: () => setState(() {
-              //         final newValue = _currentValueofyolo - 1;
-              //         _currentValueofyolo = newValue.clamp(1, 5);
-              //         Global.config["clrnet_period"] = _currentValueofyolo;
-              //       }),
-              //     ),
-              //     Text('Current int value: $_currentValueofyolo'),
-              //     IconButton(
-              //       icon: const Icon(Icons.add),
-              //       onPressed: () => setState(() {
-              //         final newValue = _currentValueofyolo + 1;
-              //         _currentValueofyolo = newValue.clamp(1, 5);
-              //         Global.config["clrnet_period"] = _currentValueofyolo;
-              //       }),
-              //     ),
-              //   ],
-              // ),
-            ],
-          ),
-          // SizedBox(width: MediaQuery.of(context).size.width*1/3,),
-          Column(
-            children: [
-              Text('For CLR', style: Theme.of(context).textTheme.headline6),
-              Center(
-                child: NumberSelector(
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     IconButton(
+                //       icon: const Icon(Icons.remove),
+                //       onPressed: () => setState(() {
+                //         final newValue = _currentValueofyolo - 1;
+                //         _currentValueofyolo = newValue.clamp(1, 5);
+                //         Global.config["clrnet_period"] = _currentValueofyolo;
+                //       }),
+                //     ),
+                //     Text('Current int value: $_currentValueofyolo'),
+                //     IconButton(
+                //       icon: const Icon(Icons.add),
+                //       onPressed: () => setState(() {
+                //         final newValue = _currentValueofyolo + 1;
+                //         _currentValueofyolo = newValue.clamp(1, 5);
+                //         Global.config["clrnet_period"] = _currentValueofyolo;
+                //       }),
+                //     ),
+                //   ],
+                // ),
+              ],
+            ),
+            // SizedBox(width: MediaQuery.of(context).size.width*1/3,),
+            Column(
+              children: [
+                Text('For CLR', style: Theme.of(context).textTheme.headline6),
+                NumberSelector(
                   current: _currentValueofCLR,
                   min: 1,
                   max: 5,
@@ -232,44 +224,32 @@ class _SubmitTaskState extends State<SubmitTask> {
                     });
                   },
                 ),
-                // child: NumberPicker(
-                //   value: _currentValueofCLR,
-                //   minValue: 1,
-                //   maxValue: 5,
-                //   haptics: true,
-                //   onChanged: (value) {
-                //     setState(() {
-                //       _currentValueofCLR = value;
-                //       Global.config["clrnet_period"] = _currentValueofCLR;
-                //     });
-                //   },
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     IconButton(
+                //       icon: const Icon(Icons.remove),
+                //       onPressed: () => setState(() {
+                //         final newValue = _currentValueofCLR - 1;
+                //         _currentValueofCLR = newValue.clamp(1, 5);
+                //         Global.config["clrnet_period"] = _currentValueofCLR;
+                //       }),
+                //     ),
+                //     Text('Current int value: $_currentValueofCLR'),
+                //     IconButton(
+                //       icon: const Icon(Icons.add),
+                //       onPressed: () => setState(() {
+                //         final newValue = _currentValueofCLR + 1;
+                //         _currentValueofCLR = newValue.clamp(1, 5);
+                //         Global.config["clrnet_period"] = _currentValueofCLR;
+                //       }),
+                //     ),
+                //   ],
                 // ),
-              ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     IconButton(
-              //       icon: const Icon(Icons.remove),
-              //       onPressed: () => setState(() {
-              //         final newValue = _currentValueofCLR - 1;
-              //         _currentValueofCLR = newValue.clamp(1, 5);
-              //         Global.config["clrnet_period"] = _currentValueofCLR;
-              //       }),
-              //     ),
-              //     Text('Current int value: $_currentValueofCLR'),
-              //     IconButton(
-              //       icon: const Icon(Icons.add),
-              //       onPressed: () => setState(() {
-              //         final newValue = _currentValueofCLR + 1;
-              //         _currentValueofCLR = newValue.clamp(1, 5);
-              //         Global.config["clrnet_period"] = _currentValueofCLR;
-              //       }),
-              //     ),
-              //   ],
-              // ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     ];
     return LayoutBuilder(
@@ -371,7 +351,8 @@ class _SubmitTaskState extends State<SubmitTask> {
               onLoading: () async {
                 try {
                   final client = http.Client();
-                  final url = Uri.parse("${Global.appConfig['server_url']}/videolist");
+                  final url =
+                      Uri.parse("${Global.appConfig['server_url']}/videolist");
                   final response = await client.get(url);
                   if (response.statusCode != 0) {
                     setState(() {
