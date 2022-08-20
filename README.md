@@ -1,18 +1,40 @@
-# driving_detection_app
+# Driving Detection APP
 
-A new Flutter project.
+## 简介
 
-Run `flutter pub get` after cloning this repo. 
+使用Flutter构建的Windows前端APP
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 使用
 
-A few resources to get you started if this is your first Flutter project:
+### 安装Flutter SDK和Visual Studio
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- [Flutter安装和环境配置](https://docs.flutter.dev/get-started/install)
+- [Visual Studio](https://visualstudio.microsoft.com/downloads/)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 克隆本仓库
+```
+git clone https://github.com/exhyy/driving_detection_app.git
+```
+
+### 安装依赖
+```
+flutter pub get
+```
+
+### 调试
+```
+flutter run
+```
+
+### 编译Windows Release版本
+```
+flutter build windows
+```
+
+---
+
+## 其他
+- 本前端使用的后端：[driving_detection_server](https://github.com/cqbu/driving_detection_server)
+- [Flutter官方文档](https://docs.flutter.dev/)
