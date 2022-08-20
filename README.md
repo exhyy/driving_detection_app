@@ -4,8 +4,6 @@
 
 使用Flutter构建的Windows前端APP
 
----
-
 ## 使用
 
 ### 安装Flutter SDK和Visual Studio
@@ -32,8 +30,6 @@ flutter run
 ```
 flutter build windows
 ```
-
----
 
 ## 其他
 - 本前端使用的后端：[driving_detection_server](https://github.com/cqbu/driving_detection_server)
