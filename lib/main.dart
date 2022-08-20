@@ -4,11 +4,12 @@ import 'package:flutter_portal/flutter_portal.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:driving_detection_app/services/utils.dart';
 import 'package:yaml/yaml.dart';
+import 'dart:io';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DartVLC.initialize(useFlutterNativeView: true);
-  await createDirectory('./download');
+  await createDirectory('${Directory.current.path}/download');
   String appConfigData = await loadAssetAsString('app_config.yaml');
   Global.appConfig = loadYaml(appConfigData);
 

@@ -10,6 +10,7 @@ import 'package:internet_file/internet_file.dart';
 import 'package:internet_file/storage_io.dart';
 import 'package:driving_detection_app/services/notification.dart';
 import 'package:driving_detection_app/pages/home.dart';
+import 'dart:io';
 
 class TaskItem extends StatefulWidget {
   const TaskItem(
@@ -68,7 +69,7 @@ class _TaskItemState extends State<TaskItem> {
       },
       storageAdditional: storageIO.additional(
         filename: '${widget.taskName}_${widget.videoName}',
-        location: './download/',
+        location: '${Directory.current.path}/download/',
       ),
     );
   }
